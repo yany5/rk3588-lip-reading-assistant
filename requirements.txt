@@ -1,0 +1,8 @@
+numpy
+opencv-python
+mediapipe
+requests
+pygame
+Pillow
+# Optional: install a board-compatible build when needed.
+# dlib

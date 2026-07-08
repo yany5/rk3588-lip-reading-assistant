@@ -1,0 +1,57 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE / operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets — never commit these
+.deepseek_api_key
+.env
+.env.*
+*.pem
+*.key
+
+# Logs and runtime output
+logs/
+*.log
+recordings/
+runtime_videos/
+runtime_infer_one/
+results/
+lrw1000_pkl_output/
+mouth_frames/
+
+# Generated media and data
+*.mp4
+*.avi
+*.mkv
+*.pkl
+*.npy
+*.npz
+*.tmp
+test_camera*.jpg
+
+# Backups and editor temporary files
+backups/
+*.bak
+*.bak_*
+*.backup
+*.orig
+*~
+
+# Local caches
+hf_cache/
+.cache/
