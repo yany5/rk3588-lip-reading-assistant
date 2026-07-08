@@ -5,7 +5,7 @@
 ## 主要功能
 
 - 摄像头常驻采集与最新帧共享
-- OK、数字 1、数字 2 手势识别与防抖
+- OK、数字 1、数字 2 手势识别
 - 唇语视频录制和 LRW-1000 模型推理
 - 在线 DeepSeek 与本地 RKLLAMA/NPU 自动切换
 - AHT20 温湿度读取与环境信息注入
@@ -30,7 +30,6 @@
 
 ## 推荐仓库结构
 
-为了不改动当前 Python 导入方式和启动脚本，运行所需文件继续放在仓库根目录；调试、旧版本和文档单独分类。
 
 ```text
 rk3588-lip-reading-assistant/
@@ -70,8 +69,6 @@ rk3588-lip-reading-assistant/
 ├── .gitattributes
 └── README.md
 ```
-
-> `gesture_service.py`、`ok_gesture_service.py` 和 `lip_reading_service.py` 是旧版或模拟服务，当前 `main.py` 不直接调用，因此放入 `legacy/`，避免与当前手势逻辑混淆。
 
 ## 硬件环境
 
@@ -145,14 +142,6 @@ lip-model/
 └── results/
 ```
 
-这些模型文件通常体积较大，并且可能受到原项目许可证限制。建议不要直接提交到普通 Git 历史中，可选择：
-
-1. 使用 Git LFS；
-2. 放入 GitHub Release；
-3. 在 README 中提供经过许可的下载说明；
-4. 仅提交模型目录结构和校验值。
-
-`shape_predictor_68_face_landmarks.dat` 约 95 MB，也建议使用 Git LFS，并在上传前确认其再分发许可证。
 
 ## 安装与运行
 
@@ -186,18 +175,13 @@ conda activate lipv4l
 from display_service import DisplayService
 ```
 
-因此仓库根目录必须包含 `display_service.py`。没有该文件时，程序会在启动阶段直接报 `ModuleNotFoundError`。
 
 ### 4. 配置 DeepSeek API Key
-
-不要把 API Key 写入代码，也不要提交到 GitHub。
 
 ```bash
 printf '%s' '你的 DeepSeek API Key' > .deepseek_api_key
 chmod 600 .deepseek_api_key
 ```
-
-`.deepseek_api_key` 已在推荐的 `.gitignore` 中排除。
 
 没有在线 API Key 时，启动脚本会尝试使用本地 `RKLLAMA + RK3588 NPU` 服务。
 
@@ -299,23 +283,3 @@ python3 env_sensor.py
 # 预览嘴部 ROI
 python3 tools/mouth_crop_preview.py
 ```
-
-## 上传前必须检查
-
-- 不要提交 `.deepseek_api_key`、`.env` 或其他密钥文件。
-- 不要提交 `logs/`、录制视频、推理中间文件、结果缓存和 `__pycache__/`。
-- 确认 `display_service.py` 已加入仓库根目录。
-- 确认模型、数据集和第三方 PDF/权重允许公开再分发。
-- 大模型、RKNN、ONNX、DAT 等二进制文件优先使用 Git LFS 或 Release。
-- `env_llm_context.py` 当前存在传感器/网络失败时使用演示兜底值的逻辑；正式公开或用于真实测量前，建议改为明确返回“数据不可用”，避免展示非真实温湿度。
-
-## 许可证
-
-请根据项目实际情况选择许可证，并分别遵守以下内容的原始许可证：
-
-- 唇语识别模型和训练代码
-- dlib 68 点关键点模型
-- RKNN/RKLLAMA 运行时
-- 第三方硬件资料和文档
-
-在尚未确认全部第三方内容的再分发权限之前，建议先将 GitHub 仓库设为 Private。
